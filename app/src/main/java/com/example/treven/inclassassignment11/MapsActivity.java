@@ -1,5 +1,6 @@
 package com.example.treven.inclassassignment11;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -11,7 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,8 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         ArrayList<LatLng> cordList = new ArrayList<>();
-        
-        Gson gson = new Gson();
+
         InputStream inputStream = getResources().openRawResource(R.raw.trip);
         String jsonString = readJsonFile(inputStream);
         //Object response = gson.fromJson(jsonString, Object.class);
@@ -67,12 +67,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double lat = ((JSONObject) ll.get(i)).getDouble("latitude");
                 double longitude = ((JSONObject) ll.get(i)).getDouble("longitude");
                 cordList.add(new LatLng(lat, longitude));
+                for (int g = 0; g < cordList.size() - 1; g++) {
+                    LatLng src = cordList.get(i);
+                    LatLng dest = cordList.get(i + 1);
+
+                    // mMap is the Map Object
+                    Polyline line = mMap.addPolyline(
+                            new PolylineOptions().add(
+                                    new LatLng(src.latitude, src.longitude),
+                                    new LatLng(dest.latitude,dest.longitude)
+                            ).width(2).color(Color.BLUE).geodesic(true)
+                    );
+                }
+
             }
             Log.d("test", j.toString());
 
         } catch (Exception e){
         }
-
 
     }
 
@@ -91,9 +103,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
         return outputStream.toString();
-    }
-
-        InputStream is = getResources().openRawResource(R.raw.trip);
     }
 
     @Override
