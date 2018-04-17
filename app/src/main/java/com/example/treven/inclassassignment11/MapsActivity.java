@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -39,6 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        InputStream is = getResources().openRawResource(R.raw.trip);
     }
 
     @Override
@@ -54,7 +57,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(end).title("End"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(end));
 
-        int length = 
 
     }
 }
