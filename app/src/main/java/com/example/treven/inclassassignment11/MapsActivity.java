@@ -35,6 +35,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double mlat;
     double mlong;
 
+    ArrayList<LatLng> cordList = new ArrayList<>();
+
     public  void DrawLine(LatLng location){
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.add(location)
@@ -54,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-        ArrayList<LatLng> cordList = new ArrayList<>();
+
         
         Gson gson = new Gson();
         InputStream inputStream = getResources().openRawResource(R.raw.trip);
@@ -93,19 +95,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return outputStream.toString();
     }
 
-        InputStream is = getResources().openRawResource(R.raw.trip);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng start = new LatLng(-34, 151);
+        LatLng start = new LatLng(cordList.get(0).latitude, cordList.get(0).longitude);
         mMap.addMarker(new MarkerOptions().position(start).title("Start"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(start));
 
-        LatLng end = new LatLng(-100, 151);
+        LatLng end = new LatLng(cordList.get(2).latitude, cordList.get(2).longitude);
         mMap.addMarker(new MarkerOptions().position(end).title("End"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(end));
 
